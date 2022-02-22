@@ -45,11 +45,3 @@ var initParticleSlider = function(){
   ? window.addEventListener('load', initParticleSlider, false)
   : window.onload = initParticleSlider);
 
-  // 
-  document.addEventListener("mousemove", (e) => {
-    gsap.to(".particle", {
-      left: e.clientX,
-      top: e.clientY,
-      stagger: -0.02
-    });
-  });
