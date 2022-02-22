@@ -10,8 +10,7 @@ body {
 #circle {
   z-index: -10;
   animation-name: rotate;
-  animation-duration: 10s;
-  /* border-radius: 60%; */
+  animation-duration: 15s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
@@ -21,5 +20,41 @@ body {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+
+.btn {
+  opacity: 0;
+  -moz-animation: cssAnimation 5s;
+  /* Firefox */
+  -webkit-animation: cssAnimation 5s;
+  /* Safari and Chrome */
+  -o-animation: cssAnimation 5s;
+  /* Opera */
+  animation: cssAnimation 5s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+  70% {
+      opacity: 0;
+  }
+  90% {
+      opacity: 0.5;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+@-webkit-keyframes cssAnimation {
+  70% {
+      opacity: 0;
+  }
+  90% {
+      opacity: 0.5;
+  }
+  100% {
+      opacity: 1;
   }
 }

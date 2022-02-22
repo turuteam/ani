@@ -4,10 +4,75 @@
   <meta charset="UTF-8">
   <title>Interactive Particle Logo</title>
   <link rel="stylesheet" href="./style.css">
+  <script src="https://code.iconify.design/2/2.1.2/iconify.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js'></script>
+  <script>
+    enter_b = () => {
+        setTimeout(() => {
+        
+        // document.getElementById("loading").outerHTML=""}, 1500);
+        alert("go to home")},1000);
+    }
+  </script>
+  <style>
+    .shape {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      transform: scale(0.8);
+    }
+    .cir {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 5;
+    }
+    .btn-contain {
+      width: 200px;
+      height: 100px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: 150px;
+      transform: translate(-50%, -50%);
+    }
 
+    .btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 4px;
+      background: rgba(33,33,33,0.6);
+      text-align: center;
+      z-index: 10;
+      transition: 0.2s;
+      cursor: pointer;
+      color: #fff;
+      font-size: 30px;
+      box-shadow: 0px 1px 5px 2px #BFCEEF;
+    }
+    .btn:active, .btn:hover, .btn:focus {
+      outline: none !important;
+      color: white;
+    } 
+    .btn-particles {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      border-radius: 50%;
+      color: #eee;
+      font-family: monospace;
+      z-index: 5;
+    /* 	filter: url(#gooeyness); */
+    }
+    .btn:active {
+      transform: scale(0.9) translate(-55%, -55%);
+    }
+    
+  </style>
 </head>
 <body>
-<!-- partial:index.partial.html -->
 <html>
   <head>
   	<meta name="viewport" content="width=device-width" />
@@ -19,10 +84,258 @@
       	</div>
     	</div>
   		<canvas class="draw" id="circle"></canvas>
+
+      <!-- <div id="loading" class="loading_screen"> -->
+
+        <div class="btn-contain">
+          <button class="btn" onclick="enter_b()">Enter</button>
+          <div class="btn-particles">
+          </div>
+        </div>
+
+      <!-- </div> -->
+      <div class="cursor-dot-outline"></div>
+      <div class="cursor-dot"></div>
+
+      <script>
+        // 
   
+        $.fn.boom = function(e) {
+          var colors = [
+            '#ffb3f6',
+            '#7aa0ff',
+            '#333',
+          ];
+          var shapes = [
+            '<polygon class="star" points="21,0,28.053423027509677,11.29179606750063,40.97218684219823,14.510643118126104,32.412678195541844,24.70820393249937,33.34349029814194,37.989356881873896,21,33,8.656509701858067,37.989356881873896,9.587321804458158,24.70820393249937,1.0278131578017735,14.510643118126108,13.94657697249032,11.291796067500632"></polygon>', 
+            // '<path class="circle" d="m 20 1 a 1 1 0 0 0 0 25 a 1 1 0 0 0 0 -25"></path>',
+            '<polygon class="other-star" points="18,0,22.242640687119284,13.757359312880714,36,18,22.242640687119284,22.242640687119284,18.000000000000004,36,13.757359312880716,22.242640687119284,0,18.000000000000004,13.757359312880714,13.757359312880716"></polygon>',
+            '<polygon class="diamond" points="18,0,27.192388155425117,8.80761184457488,36,18,27.19238815542512,27.192388155425117,18.000000000000004,36,8.807611844574883,27.19238815542512,0,18.000000000000004,8.80761184457488,8.807611844574884"></polygon>'
+          ];
+        
+          var btn = $(this);
+          var group = [];
+          var num = Math.floor(Math.random() * 50) + 30;
+        
+          for(i = 0; i < num; i++) {
+            var randBG = Math.floor(Math.random() * colors.length);
+            var getShape = Math.floor(Math.random() * shapes.length);
+            var c = Math.floor(Math.random() * 10) + 5;
+            var scale = Math.floor(Math.random() * (8 - 4 + 1)) + 4;
+            var x = Math.floor(Math.random() * (150 + 100)) - 100;
+            var y = Math.floor(Math.random() * (150 + 100)) - 100;
+            var sec = Math.floor(Math.random() * 1700) + 1000;
+            var cir = $('<div class="cir"></div>');
+            var shape = $('<svg class="shape">'+shapes[getShape]+'</svg>');
+            
+            shape.css({
+              top: e.pageY - btn.offset().top + 20,
+              left: e.pageX - btn.offset().left + 40,
+              'transform': 'scale(0.'+scale+')',
+              'transition': sec + 'ms',
+              'fill': colors[randBG]
+            });
+        
+            btn.siblings('.btn-particles').append(shape);
+        
+            group.push({shape: shape, x: x, y: y});
+          }
+          
+          for (var a = 0; a < group.length; a++) {
+            var shape = group[a].shape;
+            var x = group[a].x, y = group[a].y;
+            shape.css({
+              left: x + 50,
+              top: y + 15,
+              'transform': 'scale(0)'
+            });
+          }
+          
+          setTimeout(function() {
+            for (var b = 0; b < group.length; b++) {
+              var shape = group[b].shape;
+              shape.remove();
+            }
+            group = [];
+          }, 2000);
+        
+        }	
+        
+        $(function() {
+          $(document).on('click', '.btn', function(e) {
+            $(this).boom(e);
+          });
+        
+        });
+        ///////////
+        getTop = (element) => {
+          if (!element) return null;
+          return (
+            element.offsetTop +
+            (element.offsetParent && getTop(element.offsetParent))
+          );
+        };
+        window.onscroll = () => {
+          if (document.getElementsByClassName("timelineStops")) {
+            stops = document.getElementsByClassName("timelineStops");
+            lines = document.getElementsByClassName("scrollLine");
+            for (let i = 0; i < stops.length; i++) {
+              const stop = stops[i];
+              if (stops[i + 1]) {
+                const nextStop = stops[i + 1];
+                const line = lines[i];
+                if (getTop(nextStop) - window.scrollY > window.innerHeight / 2) {
+                  line.style.height =
+                    20 +
+                    window.scrollY +
+                    window.innerHeight / 2 -
+                    getTop(stop) +
+                    "px";
+                } else {
+                  line.style.height = 20 + getTop(nextStop) - getTop(stop) + "px";
+                }
+              }
+              if (getTop(stop) - window.scrollY < window.innerHeight / 2) {
+                stop.style.backgroundColor = "#1daefd";
+              } else {
+                stop.style.backgroundColor = "#a64af7";
+              }
+            }
+          } else console.log("Not found");
+        };
+  
+        var cursor = {
+          delay: 2,
+          _x: 0,
+          _y: 0,
+          endX: window.innerWidth / 2,
+          endY: window.innerHeight / 2,
+          cursorVisible: true,
+          cursorEnlarged: false,
+          $dot: document.querySelector(".cursor-dot"),
+          $outline: document.querySelector(".cursor-dot-outline"),
+  
+          init: function () {
+            // Set up element sizes
+            this.dotSize = this.$dot.offsetWidth;
+            this.outlineSize = this.$outline.offsetWidth;
+  
+            this.setupEventListeners();
+            this.animateDotOutline();
+          },
+  
+          //     updateCursor: function(e) {
+          //         var self = this;
+  
+          //         console.log(e)
+  
+          //         // Show the cursor
+          //         self.cursorVisible = true;
+          //         self.toggleCursorVisibility();
+  
+          //         // Position the dot
+          //         self.endX = e.pageX;
+          //         self.endY = e.pageY;
+          //         self.$dot.style.top = self.endY + 'px';
+          //         self.$dot.style.left = self.endX + 'px';
+          //     },
+  
+          setupEventListeners: function () {
+            var self = this;
+  
+            // Anchor hovering
+            document.querySelectorAll("a").forEach(function (el) {
+              el.addEventListener("mouseover", function () {
+                self.cursorEnlarged = true;
+                self.toggleCursorSize();
+              });
+              el.addEventListener("mouseout", function () {
+                self.cursorEnlarged = false;
+                self.toggleCursorSize();
+              });
+            });
+  
+            // Click events
+            document.addEventListener("mousedown", function () {
+              self.cursorEnlarged = true;
+              self.toggleCursorSize();
+            });
+            document.addEventListener("mouseup", function () {
+              self.cursorEnlarged = false;
+              self.toggleCursorSize();
+            });
+  
+            document.addEventListener("mousemove", function (e) {
+              // Show the cursor
+              self.cursorVisible = true;
+              self.toggleCursorVisibility();
+  
+              // Position the dot
+              self.endX = e.pageX;
+              self.endY = e.pageY;
+              self.$dot.style.top = self.endY + "px";
+              self.$dot.style.left = self.endX + "px";
+            });
+  
+            // Hide/show cursor
+            document.addEventListener("mouseenter", function (e) {
+              self.cursorVisible = true;
+              self.toggleCursorVisibility();
+              self.$dot.style.opacity = 1;
+              self.$outline.style.opacity = 1;
+            });
+  
+            document.addEventListener("mouseleave", function (e) {
+              self.cursorVisible = true;
+              self.toggleCursorVisibility();
+              self.$dot.style.opacity = 0;
+              self.$outline.style.opacity = 0;
+            });
+          },
+  
+          animateDotOutline: function () {
+            var self = this;
+  
+            self._x += (self.endX - self._x) / self.delay;
+            self._y += (self.endY - self._y) / self.delay;
+            self.$outline.style.top = self._y + "px";
+            self.$outline.style.left = self._x + "px";
+  
+            requestAnimationFrame(this.animateDotOutline.bind(self));
+          },
+  
+          toggleCursorSize: function () {
+            var self = this;
+  
+            if (self.cursorEnlarged) {
+              self.$dot.style.transform = "translate(-50%, -50%) scale(0.75)";
+              self.$outline.style.transform = "translate(-50%, -50%) scale(1.5)";
+            } else {
+              self.$dot.style.transform = "translate(-50%, -50%) scale(1)";
+              self.$outline.style.transform = "translate(-50%, -50%) scale(1)";
+            }
+          },
+  
+          toggleCursorVisibility: function () {
+            var self = this;
+  
+            if (self.cursorVisible) {
+              self.$dot.style.opacity = 1;
+              self.$outline.style.opacity = 1;
+            } else {
+              self.$dot.style.opacity = 0;
+              self.$outline.style.opacity = 0;
+            }
+          },
+        };
+  
+        cursor.init();
+      </script>
+
   </body>
 </html>
-<!-- partial -->
+
+  <script src="http://particleslider.com/js/particleslider/current/particleslider.js"></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js'></script>
   <script  src="./script.js"></script>
 
