@@ -4,10 +4,12 @@ var init = function(){
     height: 1e9,
     color: 'rgba(255,255,255,1)',
     ptlGap:1,
-    mouseForce: 300
+    mouseForce: 100
   });
+  
+var ptl = new ps.Particle(ps);
+ptl.color = [255,255,255,255];
 }
-
 
 var initParticleSlider = function(){
   var psScript = document.createElement('script');
