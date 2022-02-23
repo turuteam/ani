@@ -1,5 +1,11 @@
 var init = function(){
+  var isMobile = navigator.userAgent &&
+  navigator.userAgent.toLowerCase().indexOf('mobile') >= 0;
+  var isSmall = window.innerWidth < 600;
+
   var ps = new ParticleSlider({
+    ptlGap: isMobile || isSmall ? 3 : 0,
+    ptlSize: isMobile || isSmall ? 3 : 1,
     ptlGap: 1 ,
     mouseForce: 100 ,
     monochrome: true ,
