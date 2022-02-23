@@ -7,15 +7,26 @@ var init = function(){
     ptlGap: isMobile || isSmall ? 3 : 0,
     ptlSize: isMobile || isSmall ? 3 : 1,
     ptlGap: 1 ,
-    mouseForce: 100 ,
+    mouseForce: -1.3 ,
     monochrome: true ,
     color: '#fff' ,
     ptlSize: 1 ,
     
   });
+  
+var ptl = new ps.Particle(ps);
+ptl.gravityX = ps.width - 1;
+ptl.gravityY = ps.height - 1;
+ptl.move();
+
+ptl.velocityX += 10;
+ptl.velocityY += 10;
+
+
+
 }
 
-// var ptl = new ps.Particle(ps);
+
 
 // Tamino Martinius - All rights reserved
 
